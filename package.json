@@ -4,5 +4,11 @@
   "description": "learning express",
   "main": "index.js",
   "author": "Scott Williams <scott.joe.williams@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
 }
