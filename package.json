@@ -1,14 +1,22 @@
 {
-  "name": "express-01",
-  "version": "1.0.0",
+  "name": "gym-express",
+  "version": "0.0.0",
   "description": "learning express",
   "main": "index.js",
   "author": "Scott Williams <scott.joe.williams@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
   "dependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
+  },
+  "engines": {
+    "node": "14",
+    "npm": "6"
   }
 }
