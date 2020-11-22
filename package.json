@@ -1,0 +1,8 @@
+{
+  "name": "express-01",
+  "version": "1.0.0",
+  "description": "learning express",
+  "main": "index.js",
+  "author": "Scott Williams <scott.joe.williams@gmail.com>",
+  "license": "MIT"
+}
