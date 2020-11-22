@@ -1,7 +1,11 @@
 const express = require('express')
 const fs = require('fs')
 const _ = require('lodash')
+const cons = require('consolidate')
 
+// =================================
+// ========== SET UP DATA ==========
+// =================================
 // Instantiate Users as empty array
 const users = []
 // Read static users.json file and parse results
@@ -20,6 +24,9 @@ fs.readFile('./data/users.json', { encoding: 'utf-8' }, (err, data) => {
   })
 })
 
+// =================================
+// ===== CONFIGURE APPLICATION =====
+// =================================
 // Instantiate Express app instance
 const app = express()
 
@@ -36,17 +43,16 @@ app.get('/:username', (req, res) => {
 
 // Set Root route handler
 app.get('/', (_req, res) => {
-  let buffer = ''
-
-  users.forEach((user) => {
-    buffer += `<a href="${user.username}">${user.name.full}</a></br>`
+  cons.handlebars('views/index.hbs', { users }, function (err, html) {
+    if (err) throw err
+    res.send(html)
   })
-
-  res.status(200).send(buffer)
 })
 
-// Create Server listening on port 3000
-// Capture server object to use data later
+// =================================
+// ========= START SERVER ==========
+// =================================
+// Create Server listening on port 3000 & capture server object to use later
 const server = app.listen(3000, () => {
   console.log(`App is running on port ${server.address().port}`)
 })
