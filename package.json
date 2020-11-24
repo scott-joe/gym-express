@@ -6,11 +6,14 @@
   "author": "Scott Williams <scott.joe.williams@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "cross-env DEBUG=error node index.js",
+    "dev": "cross-env DEBUG=console nodemon index.js"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "consolidate": "^0.16.0",
+    "cross-env": "^7.0.2",
+    "debug": "^4.3.1",
     "express": "^4.17.1",
     "handlebars": "^4.7.6",
     "lodash": "^4.17.20",
