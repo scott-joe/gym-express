@@ -29,16 +29,18 @@ fs.readFile('./data/users.json', { encoding: 'utf-8' }, (err, data) => {
 // =================================
 // Instantiate Express app instance
 const app = express()
-
-// Route middleware using Regex matching
-app.get(/big.*/, (_req, _res, next) => {
-  console.log('BIG USER')
-  next()
-})
+// Set up images directory
+app.use('/images', express.static('images'))
 
 // User route
 app.get('/:username', (req, res) => {
-  res.send(`Suuup ${req.params.username}`)
+  const username = req.params?.username
+  // const user = users.filter((x) => x.username === username)[0]
+  // cons.handlebars('views/user.hbs', { user: user }, function (err, html) {
+  cons.handlebars('views/user.hbs', { username }, function (err, html) {
+    if (err) throw err
+    res.send(html)
+  })
 })
 
 // Set Root route handler

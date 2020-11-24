@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Index</title>
+  <title>User Profile</title>
   <style>
     * {
       font-family: Helvetica, Arial, sans-serif;
@@ -19,12 +19,9 @@
   </style>
 </head>
 <body>
-  <h1>Users</h1>
-  {{#each users as |user|}}
-  <div>
-    <img src="/images/{{user.username}}_sm.jpg" alt="{{user.username}}">
-    <a href="/{{user.username}}">{{user.name.full}}</a>
-  </div>
-  {{/each}}
+  <h1>hello world</h1>
+  <h1>{{username}}</h1>
+  {{!-- <img src="/images/{{user.username}}_lg.jpg" alt="{{user.username}}"> --}}
+  <img src="/images/{{username}}_lg.jpg" alt="{{username}}">
 </body>
 </html>
