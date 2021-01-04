@@ -51,6 +51,18 @@ function saveUser(username, data) {
   }
 }
 
+// Verify user/file middleware
+function verifyUser(req, res, next) {
+  const filePath = getUserFilePath(req.params.username);
+  fs.stat(filePath, (err, stats) => {
+    if (err) {
+      res.redirect(`/error/${req.params.username}`);
+    } else {
+      if (stats.isFile()) next();
+    }
+  });
+}
+
 // =================================
 // ===== CONFIGURE APPLICATION =====
 // =================================
@@ -63,8 +75,30 @@ app.use("/images", express.static("images"));
 // Kill requests for the favicon
 app.get("/favicon.ico", (_req, res) => res.end());
 
+// Return user data as JSON
+app.get("/data/:username", verifyUser, (req, res) => {
+  const username = req.params?.username;
+  const user = getUser(username);
+  res.json(user);
+});
+// Return user data as file download
+app.get("*.json", (req, res) => {
+  res.download(`./users/${req.path}`);
+});
+// Handle bad usernames
+app.get("/error/:username", (req, res) => {
+  log.error(`${req.method} for ${req.params.username}`);
+  res
+    .status(404)
+    .send(`<h4>No user named <u>${req.params.username}</u> found</h4>`);
+});
+app.all("/:username", (req, _res, next) => {
+  log.console(`${req.method} for ${req.params.username}`);
+  next();
+});
+
 // User routes
-app.get("/:username", (req, res) => {
+app.get("/:username", verifyUser, (req, res) => {
   const username = req.params?.username;
   // Fetch the current user's data out of the user store
   const user = getUser(username);
@@ -78,7 +112,7 @@ app.get("/:username", (req, res) => {
     }
   );
 });
-app.put("/:username", (req, res) => {
+app.put("/:username", verifyUser, (req, res) => {
   try {
     // Get username from params
     const username = req.params?.username;
@@ -97,7 +131,7 @@ app.put("/:username", (req, res) => {
     throw error;
   }
 });
-app.delete("/:username", (req, res) => {
+app.delete("/:username", verifyUser, (req, res) => {
   try {
     // get username
     const username = req.params.username;
@@ -113,30 +147,6 @@ app.delete("/:username", (req, res) => {
 });
 
 // Index
-// app.get("/", (_req, res) => {
-//   // Read users directory for filenames
-//   fs.readdir("users", (_err, files) => {
-//     // Read those filenames and create useful data from the contents
-//     const users = files.map((filename) => {
-//       const filePath = path.join(__dirname, "users", filename);
-//       const user = JSON.parse(fs.readFileSync(filePath, fsOpts));
-
-//       // Format data on it's way out
-//       return {
-//         username: user?.username,
-//         name: {
-//           full: _.startCase(`${user?.name.first} ${user?.name.last}`),
-//         },
-//       };
-//     });
-
-//     return cons.handlebars("views/index.hbs", { users }, function (err, html) {
-//       if (err) throw err;
-//       res.send(html);
-//     });
-//   });
-// });
-
 app.get("/", function (req, res) {
   const users = [];
 
@@ -144,6 +154,7 @@ app.get("/", function (req, res) {
     files.forEach(function (file) {
       const callback = (err, data) => {
         const user = JSON.parse(data);
+
         users.push({
           username: user?.username,
           name: {
