@@ -1,13 +1,7 @@
 const express = require("express");
 const utils = require("./utils");
 const fs = require("fs");
-const debug = require("debug");
 const cons = require("consolidate");
-
-const log = {
-  error: debug("error"),
-  console: debug("console"),
-};
 
 const router = express.Router({
   mergeParams: true,
@@ -15,7 +9,7 @@ const router = express.Router({
 
 // Logging middleware for username calls
 router.all("/", (req, _res, next) => {
-  log.console(`${req.method} for ${req.params.username}`);
+  utils.log.console(`${req.method} for ${req.params.username}`);
   next();
 });
 
@@ -55,7 +49,7 @@ router.put("/", utils.verifyUser, (req, res) => {
     // res.end()
     res.status(200).send("User Updated");
   } catch (error) {
-    log.error(error);
+    utils.log.error(error);
     res.status(500).send(NODE_ENV ? "Error updating user" : error);
     throw error;
   }
@@ -71,7 +65,7 @@ router.delete("/", utils.verifyUser, (req, res) => {
     fs.unlinkSync(filename);
     res.status(200).send("User Deleted");
   } catch (error) {
-    log.error(error);
+    utils.log.error(error);
     res.status(500).send(NODE_ENV ? "Error deleting user" : error);
     throw error;
   }

@@ -1,7 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 const _ = require("lodash");
+const debug = require("debug");
+
 const fsOpts = { encoding: "utf-8" };
+const log = {
+  error: debug("error"),
+  console: debug("console"),
+};
 
 function getUserFilePath(username) {
   return path.join(__dirname, "data", "users", `${username}.json`);
@@ -50,6 +56,7 @@ function verifyUser(req, res, next) {
   });
 }
 
+// Sort by last (name) ascending
 const compare = (a, b) => {
   const splitA = a.name.full.split(" ");
   const splitB = b.name.full.split(" ");
@@ -66,3 +73,5 @@ exports.getUserFilePath = getUserFilePath;
 exports.saveUser = saveUser;
 exports.verifyUser = verifyUser;
 exports.compare = compare;
+exports.fsOpts = fsOpts;
+exports.log = log;

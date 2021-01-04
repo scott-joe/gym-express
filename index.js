@@ -4,15 +4,8 @@ const path = require("path");
 const _ = require("lodash");
 const cons = require("consolidate");
 const bodyParser = require("body-parser");
-const debug = require("debug");
-const utils = require("./utils");
 
-const { NODE_ENV } = process.env;
-const fsOpts = { encoding: "utf-8" };
-const log = {
-  error: debug("error"),
-  console: debug("console"),
-};
+const utils = require("./utils");
 
 // =================================
 // ===== CONFIGURE APPLICATION =====
@@ -39,7 +32,7 @@ app.get("/file/:username", (req, res) => {
 });
 // Handle bad usernames
 app.get("/error/:username", (req, res) => {
-  log.error(`${req.method} for ${req.params.username}`);
+  utils.log.error(`${req.method} for ${req.params.username}`);
   res
     .status(404)
     .send(`<h4>No user named <u>${req.params.username}</u> found</h4>`);
@@ -82,14 +75,18 @@ app.get("/", function (req, res) {
             }
           };
 
-          fs.readFile(path.join(__dirname, "users", file), fsOpts, callback);
+          fs.readFile(
+            path.join(__dirname, "users", file),
+            utils.fsOpts,
+            callback
+          );
         } catch (error) {
-          log.error(error);
+          utils.log.error(error);
         }
       });
     });
   } catch (error) {
-    log.error(error);
+    utils.log.error(error);
   }
 });
 
