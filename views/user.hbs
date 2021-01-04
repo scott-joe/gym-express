@@ -60,7 +60,8 @@
   <div class="pic">
     <img src="/images/{{user.username}}_med.jpg">
     <p>
-      <a href="#" onclick="edit()">Edit</a>
+      {{!-- <a href="#" onclick="edit()">Edit</a> --}}
+      <a href="/{{user.username}}/edit" onclick="edit()">Edit</a>
       <a href="#" onclick="del()">Delete</a>
     </p>
   </div>
