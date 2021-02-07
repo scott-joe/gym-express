@@ -6,7 +6,7 @@
   "author": "Scott Williams <scott.joe.williams@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "cross-env DEBUG=error node index.js",
+    "start": "cross-env DEBUG=error nodemon index.js",
     "dev": "cross-env DEBUG=console,error nodemon index.js"
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "pug": "^3.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.7"
   },
   "engines": {
     "node": "14",
