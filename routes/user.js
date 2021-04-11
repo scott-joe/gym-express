@@ -29,11 +29,6 @@ router.get('/', utils.verifyUser, (req, res) => {
   )
 })
 
-// Alternate update user route
-router.get('/edit', utils.verifyUser, (req, res) => {
-  res.send(`Editing ${req.params.username}`)
-})
-
 // Update user
 router.put('/', utils.verifyUser, (req, res) => {
   try {
